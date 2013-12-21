@@ -1,0 +1,47 @@
+apply plugin: 'scala'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/releases/"
+    }
+}
+
+scalaVersion = '2.10'
+scalaVersionRevision = '2'
+breezeRevision = '0.5.2'
+specs2Revision = '0.14'
+
+configurations {
+    scalaCompiler
+    scalaLibrary
+}
+
+dependencies {
+    scalaTools "org.scala-lang:scala-compiler:$scalaVersion.$scalaVersionRevision",
+               "org.scala-lang:scala-library:$scalaVersion.$scalaVersionRevision"
+
+    scalaLibrary "org.scala-lang:scala-library:$scalaVersion.$scalaVersionRevision"
+    scalaCompiler "org.scala-lang:scala-compiler:$scalaVersion.$scalaVersionRevision"
+
+    compile "org.scala-lang:scala-library:$scalaVersion.$scalaVersionRevision"
+    compile "org.scalanlp:breeze_$scalaVersion:$breezeRevision"
+    testCompile "org.specs2:specs2_$scalaVersion:$specs2Revision"
+}
+
+compileScala {
+    scalaCompileOptions.useCompileDaemon = false
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+    configure(scalaCompileOptions.forkOptions) {
+        memoryMaximumSize = '1g'
+        jvmArgs = ['-XX:MaxPermSize=512m']
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.9'
+}
