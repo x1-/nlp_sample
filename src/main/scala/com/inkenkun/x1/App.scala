@@ -74,7 +74,7 @@ object App {
     // #9. 行列の全ての要素に5.0かける
     //    5.0   10.0  15.0
     //    20.0  25.0  30.0
-    val prodall = m23 * 0.5d
+    val prodall = m23 * 5d
     println( prodall )
 
     // #10. 行列の割り算
